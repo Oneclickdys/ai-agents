@@ -69,13 +69,34 @@ cp -r ai-agents/ your-project/.claude/
    - Update repository URLs and LINEAR workspace references
    - Customize task templates for your workflow
 
-2. **Set Up LINEAR Integration:**
-   - Ensure you have LINEAR CLI or API access configured
-   - Update LINEAR workspace ID in command files
+2. **Set Up LINEAR and Sentry Integration:**
+   - Install the LINEAR MCP tool: `claude mcp add --transport sse linear https://mcp.linear.app/sse`
+   - Install the Sentry MCP tool: `claude mcp add --transport http sentry https://mcp.sentry.dev/mcp`
+   - Launch Claude Code and verify the tool is available: `claude mcp list`
+   - You should see `linear` and `sentry` in the list of available MCP tools
+   - If you don't see `linear` or `sentry`, try restarting Claude Code
+   - Select  Linear and authenticate with your Linear account
+   - Select Sentry and authenticate with your Sentry account
 
 3. **Configure Git Settings:**
    - Verify GitHub CLI (`gh`) is installed and authenticated
    - Adjust branch naming conventions if needed
+
+4. **Configure Claude Code API Key:**
+Add/edit ~/.claude/settings.json to have:
+
+{
+"apiKeyHelper": "~/.claude/anthropic_key.sh"
+}
+
+Then in ~/.claude/anthropic_key.sh:
+
+echo "sk-........."
+
+and make it executable with:
+
+chmod +x ~/.claude/anthropic_key.sh
+
 
 ## Directory Structure
 
