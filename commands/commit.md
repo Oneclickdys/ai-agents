@@ -1,121 +1,60 @@
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git branch:*), Bash(git diff:*), Bash(git log:*), Bash(cd:*)
-description: Create git commits with proper LINEAR references
+description: Create git commits with Linear (TANAI) references
+response-language: es
 ---
 
 # Create Git Commit
 
-You are tasked with creating git commits for the changes made during this session, following GitHub and LINEAR conventions.
+Create commits for changes made in this session following GitHub and Linear conventions.
 
-## Repository Structure
+## Repository Context
 
-This is a **parent repository with a Git submodule**:
-- **Parent repo**: `tangerine-frontoffice` (https://github.com/Oneclickdys/tangerine-frontoffice)
-- **Submodule**: `src/_core` (https://github.com/Oneclickdys/i2c_frontoffice_core)
-- **Main branches**: `main` in parent, `master` in submodule
+- Project: `tangerine-ai` (AI API for Tangerine)
+- Default branch: `main`
+- Issue tracker: Linear (project: `TANAI`)
+- No submodules in this repository
 
-## Process:
+## Process
 
-### 1. **Identify where changes are:**
-   - Run `git status` in parent repo to see if changes are in parent or submodule
-   - If you see `modified: src/_core (new commits)`, changes are in the submodule
-   - Check both locations:
-     ```bash
-     git status
-     cd src/_core && git status && cd ../..
-     ```
+### 1) Identify changes
 
-### 2. **Extract LINEAR ticket ID:**
-   - Get current branch name: `git branch --show-current`
-   - Extract LINEAR ID from branch name (e.g., from `tan-3554-fix-invalid-url` get `TAN-3554`)
-   - LINEAR IDs are case-sensitive and follow pattern: `TAN-XXXX`, `TANAI-XXX`, etc.
+- Run `git status` to review modified/untracked files.
 
-### 3. **For changes in SUBMODULE (`src/_core`):**
+### 2) Extract Linear ID from branch name
 
-   a. Navigate to submodule and create branch if needed:
-   ```bash
-   cd src/_core
-   git checkout master
-   git pull origin master
-   git checkout -b tan-XXXX-description
-   ```
+- Get current branch: `git branch --show-current`
+- Valid examples:
+    - `tanai-1234-fix-endpoint` → `TANAI-1234`
+    - `TANAI-5678-refactor-service` → `TANAI-5678`
 
-   b. Add and commit changes in submodule:
-   ```bash
-   git add <files>
-   git commit -m "TAN-XXXX: Descriptive message"
-   ```
+### 3) Create the commit
 
-   c. Return to parent and update submodule reference:
-   ```bash
-   cd ../..
-   git add src/_core
-   git commit -m "TAN-XXXX: Descriptive message
-
-   Updates _core submodule to include [brief description]"
-   ```
-
-### 4. **For changes in PARENT repository only:**
-   ```bash
-   git add <files>
-   git commit -m "TAN-XXXX: Descriptive message"
-   ```
-
-### 5. **Commit Message Format:**
-   - Format: `TAN-XXXX: Descriptive message`
-   - Examples:
-     - `TAN-3554: Add three-layer validation to prevent TypeError in IframeViewer`
-     - `TAN-3310: Implement qualitative grading scale`
-   - Use imperative mood ("Add" not "Added", "Fix" not "Fixed")
-   - First line should be concise (50-72 chars)
-   - Add detailed explanation in body if needed (separated by blank line)
-
-### 6. **Verify commits:**
-   - Confirm with `git log --oneline -1`
-   - For submodule changes, verify both:
-     ```bash
-     cd src/_core && git log --oneline -1
-     cd ../.. && git log --oneline -1
-     ```
-
-## Important Notes:
-
-- **NEVER add AI attribution or "Generated with Claude" messages**
-- **NO Co-Authored-By lines**
-- Always include LINEAR ticket ID from branch name
-- Write commits as if the developer wrote them
-- When working with submodules, **always commit in the submodule first**, then update the parent
-- The parent repo commit should reference that it updates the submodule
-- Use GitHub, not GitLab (this project is on GitHub)
-
-## Common Scenarios:
-
-### Scenario 1: Changes only in submodule files
-1. Commit in `src/_core` first
-2. Commit submodule reference update in parent
-
-### Scenario 2: Changes only in parent files (outside `src/`)
-1. Commit directly in parent repo
-
-### Scenario 3: Changes in both submodule and parent files
-1. Commit in `src/_core` first
-2. Commit parent files + submodule reference update together
-
-## Troubleshooting:
-
-**If submodule is in detached HEAD state:**
 ```bash
-cd src/_core
-git checkout master
-git pull origin master
-git checkout -b your-feature-branch
-# Cherry-pick or reapply your changes
+git add <files>
+git commit -m "TANAI-XXXX: Descriptive message"
 ```
 
-**If you committed in wrong place:**
-```bash
-# Save changes
-git diff HEAD~1 > /tmp/changes.patch
-git reset --hard HEAD~1
-# Apply in correct location
-```
+### 4) Commit message format
+
+- Format: `TANAI-XXXX: Descriptive message`
+- Imperative mood: "Add", "Fix", "Implement"
+- First line concise (50–72 chars)
+- Optional body after one blank line for technical details/context
+
+### 5) Verify
+
+- Check the last commit: `git log --oneline -1`
+
+## Important Notes
+
+- Do not add AI attributions or "Generated by ..." lines
+- Avoid `Co-Authored-By` lines
+- Always include the Linear ID (TANAI-XXXX) in the commit header
+- Write messages as the responsible developer would
+- Git hosting: GitHub
+
+## Examples
+
+- `TANAI-1420: Add validations to CreateChat DTO`
+- `TANAI-1583: Fix error handling in EmbeddingService`

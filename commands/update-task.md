@@ -1,63 +1,61 @@
 ---
-argument-hint: [linear-task-id] --additional-context [optional context for AI to consider]
-description: Update existing LINEAR task with enhanced analysis based on codebase review
-allowed-tools: Grep, Glob, Read, Task, mcp__atlassian__*
+argument-hint: [TANAI-XXXX] --additional-context [optional context]
+description: Update a Linear (TANAI) task with repository-driven technical analysis
+allowed-tools: Grep, Glob, Read, Task, mcp__linear__*
+response-language: es
 ---
 
-I need to update an existing LINEAR task with enhanced technical details. The task ID provided is: $ARGUMENTS
+I need to update an existing Linear task: $ARGUMENTS
 
-Please help me by following this workflow:
+Please follow this workflow:
 
 ## Phase 1: Retrieve and Analyze
 
-1. **Parse Arguments**: Extract the LINEAR task ID and any additional context from the arguments
-2. **Fetch Existing Task**: Retrieve the current LINEAR task details using:
-   - Tool: Linear MCP
-   - Cloud ID from MCP tools
-3. **Extract Current Details**: Parse the existing:
-   - Title/Summary
-   - Description
-   - Current status and priority
-   - Any existing technical context
+1. Parse arguments: extract ID (`TANAI-XXXX`) and `--additional-context` if present
+2. Fetch current task details via Linear MCP
+3. Extract:
+    - Title/summary
+    - Description
+    - Current status and priority
+    - Existing technical context
 
-## Phase 2: Codebase Analysis and Enhancement
+## Phase 2: Repository Analysis and Enhancement
 
-1. **Improve Understanding**: Based on the existing title, description, and any additional context provided, create a more detailed technical analysis
-2. **Analyze Codebase**: Search through the repository to find:
-   - Relevant code files and functions
-   - Related documentation
-   - Similar patterns or existing implementations
-   - Database schemas or configurations
-   - Recent changes that might affect implementation
-3. **Scan Documentation**: Review relevant docs to determine technical requirements
-4. **Consider Additional Context**: Incorporate any additional insights provided in the --additional-context flag
+1. Deepen understanding using the provided context
+2. Analyze the repository for:
+    - Relevant files/functions
+    - Related documentation
+    - Similar implementations or dependencies
+    - Prisma schema and recent migrations
+3. Review docs under `doc/` and `docs/`
+4. Incorporate `--additional-context`
 
 ## Phase 3: Enhanced Description Generation
 
-Using the template from `.claude/task-template.md`, create an updated comprehensive task description that includes:
-- **Summary**: Keep existing or refine if needed
-- **End Goal/Objective**: Clear desired outcome (enhanced from original)
-- **Technical Context**: Architecture and implementation approach based on codebase analysis
-- **Relevant Code Files**: List with descriptions and line numbers where applicable
-- **Relevant Documentation Paths**: List with relevance notes
-- **Potentially New Files or To Be Modified**: What needs to be created/changed
-- **Implementation Notes**: Technical considerations from analysis
-- **Acceptance Criteria**: Specific measurable outcomes (preserve existing, add new if needed)
-- **Additional Insights**: Any new findings from the additional context provided
+Using `.claude/task-template.md`, produce an updated description with:
 
-## Phase 4: Update LINEAR Task
+- Summary (refined if needed)
+- Clear end goal
+- Technical context (architecture and approach)
+- Relevant files (with brief explanation)
+- Relevant documentation (with rationale)
+- Files to create/modify
+- Implementation notes
+- Updated acceptance criteria (preserving useful existing ones)
+- Additional findings
 
-1. **Present Enhanced Description**: Show the complete updated task description for review
-2. **Update LINEAR Issue Automatically**: Immediately update the LINEAR task using:
-   - Tool: Linear MCP
-   - Preserve existing priority and due date unless specifically changed
-   - Update description with enhanced technical analysis
-   - Add a note indicating: "✨ Enhanced with technical analysis and codebase review"
-   - Return confirmation of successful update
+## Phase 4: Update in Linear
 
-**IMPORTANT**:
-- Preserve all existing metadata (assignee, priority, due date, etc.) unless explicitly instructed to change
-- Append to existing description rather than replacing if there's valuable existing content
-- After presenting the enhanced description, immediately proceed to update the JIRA task automatically
+1. Present the enhanced description
+2. Update the Linear task via MCP:
+    - Tool: `mcp__linear__updateIssue`
+    - Preserve priority and due date unless specified otherwise
+    - Add note: "✨ Enhanced with technical analysis and codebase review"
+    - Confirm successful update
 
-Start by parsing the LINEAR task ID and any additional context, then fetch the existing task details.
+IMPORTANT:
+
+- Preserve existing metadata (assignee, priority, due date) unless instructed
+- Prefer appending/expanding over replacing if content is valuable
+
+Start by parsing the Linear ID and any additional context, then fetch current task details.
