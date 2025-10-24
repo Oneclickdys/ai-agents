@@ -1,217 +1,242 @@
-# AI Agents - Claude Code Configuration
+# Oneclick AI Agents Marketplace
 
-A comprehensive configuration repository for Claude Code with custom agents, slash commands, and workflows designed to streamline development processes.
+A comprehensive plugin marketplace for [Claude Code](https://github.com/anthropics/claude-code) featuring specialized agents, commands, and skills for LINEAR ticket implementation workflows across all Oneclick platforms.
 
-## Overview
+> Built following [Claude Code plugin architecture](https://docs.claude.com/en/docs/claude-code/plugins) and [Anthropic's best practices](https://github.com/anthropics/claude-code/tree/main/plugins).
 
-This repository contains a production-ready setup for Claude Code that includes:
+## Quick Start
 
-- Custom AI agents for analysis, planning, implementation, and code review
-- Slash commands for common development workflows
-- Integration with LINEAR project management
-- Git workflow automation
-- Repository architecture documentation
-
-## Features
-
-### Agentic Workflows
-
-Three specialized AI agents work together to automate development tasks:
-
-1. **Analysis & Planning Agent** (`agents/analysis-planning-agent.md`)
-   - Analyzes task requirements from LINEAR
-   - Creates comprehensive implementation plans
-   - Identifies dependencies and potential issues
-
-2. **Implementation Agent** (`agents/implementation-agent.md`)
-   - Executes the implementation plan
-   - Writes code following best practices
-   - Runs tests and ensures quality
-
-3. **Review Agent** (`agents/review-agent.md`)
-   - Reviews code changes
-   - Creates pull requests with detailed descriptions
-   - Ensures proper documentation
-
-### Slash Commands
-
-#### Primary Workflow Commands
-
-- `/start-work [TASK-ID]` - Complete workflow from task analysis to PR creation
-- `/commit` - Create git commits with proper references
-- `/create-mr` - Create GitHub pull requests
-
-#### Task Management Commands
-
-- `/create-task` - Create new LINEAR tasks with AI-enhanced descriptions
-- `/update-task [TASK-ID]` - Update existing LINEAR tasks with codebase analysis
-
-## Installation
-
-### Option 1: Clone to Your Project
+### Installation
 
 ```bash
-# Clone this repository into your project's .claude directory
-git clone https://github.com/Oneclickdys/ai-agents.git .claude
+# Add the Oneclick marketplace
+/plugin marketplace add Oneclickdys/ai-agents
+
+# Install the Oneclick plugin
+/plugin install oneclick@oneclick
 ```
 
-### Option 2: Copy Configuration Files
+### Usage
 
 ```bash
-# Copy the entire structure to your project
-cp -r ai-agents/ your-project/.claude/
+# Full workflow: Analysis → Implementation → PR → Review
+/workflow TAN-123
+
+# Or run phases independently:
+/analyze-ticket TAN-123  # Phase 1: Analysis & Planning
+/implement TAN-123       # Phase 2: Implementation & Testing
+/review                  # Review local changes (diff with base branch)
+/create-pr               # Create pull request
+/review-pr [pr-number]   # Review the PR
+
+# Utility commands:
+/create-task             # Create LINEAR tasks
+/update-task             # Update LINEAR tasks
 ```
 
-### Configuration
-
-1. **Update Repository-Specific Information:**
-   - Edit paths in documentation files to match your project structure
-   - Update repository URLs and LINEAR workspace references
-   - Customize task templates for your workflow
-
-2. **Set Up LINEAR and Sentry Integration:**
-   - Install the LINEAR MCP tool: `claude mcp add --transport sse linear https://mcp.linear.app/sse`
-   - Install the Sentry MCP tool: `claude mcp add --transport http sentry https://mcp.sentry.dev/mcp`
-   - Launch Claude Code and verify the tool is available: `claude mcp list`
-   - You should see `linear` and `sentry` in the list of available MCP tools
-   - If you don't see `linear` or `sentry`, try restarting Claude Code
-   - Select  Linear and authenticate with your Linear account
-   - Select Sentry and authenticate with your Sentry account
-
-3. **Configure Git Settings:**
-   - Verify GitHub CLI (`gh`) is installed and authenticated
-   - Adjust branch naming conventions if needed
-
-4. **Configure Claude Code API Key:**
-Add/edit ~/.claude/settings.json to have:
-
-{
-"apiKeyHelper": "~/.claude/anthropic_key.sh"
-}
-
-Then in ~/.claude/anthropic_key.sh:
-
-echo "sk-........."
-
-and make it executable with:
-
-chmod +x ~/.claude/anthropic_key.sh
-
-
-## Directory Structure
-
-```
-.claude/
-├── README.md                        # This file
-├── REPOSITORY-STRUCTURE.md          # Repository architecture guide
-├── BACKEND-FRONTEND-GUIDE.md        # Backend vs Frontend decision guide
-├── commands/
-│   ├── start-work.md                # Main agentic workflow
-│   ├── commit.md                    # Git commit creation
-│   ├── create-mr.md                 # Pull request creation
-│   ├── create-task.md               # LINEAR task creation
-│   └── update-task.md               # LINEAR task updates
-├── agents/
-│   ├── analysis-planning-agent.md   # Stage 1: Analysis & Planning
-│   ├── implementation-agent.md      # Stage 2: Implementation
-│   └── review-agent.md              # Stage 3: Review & PR
-└── task-template.md                 # LINEAR task template
-```
-
-## Usage
-
-### Quick Start
-
-1. **Start working on a task:**
-   ```bash
-   /start-work TASK-123
-   ```
-
-2. **The system will automatically:**
-   - Fetch task details from LINEAR
-   - Create appropriate branches
-   - Analyze requirements and create a plan
-   - Implement the changes
-   - Run tests
-   - Create commits
-   - Generate pull request(s)
-
-### Manual Workflow
-
-If you prefer more control:
-
-1. Make your changes manually
-2. Create commits: `/commit`
-3. Create PR: `/create-mr`
-
-## Customization
-
-### Adapting to Your Project
-
-1. **Repository Structure:**
-   - Update `REPOSITORY-STRUCTURE.md` with your repo architecture
-   - Modify branch naming conventions in command files
-   - Adjust base branches for PRs
-
-2. **Task Management:**
-   - Replace LINEAR with your project management tool (Jira, GitHub Issues, etc.)
-   - Update task ID patterns in commands
-   - Customize task templates
-
-3. **Agents:**
-   - Modify agent prompts to match your coding standards
-   - Add custom validation steps
-   - Include project-specific best practices
-
-### Adding New Commands
-
-Create a new markdown file in the `commands/` directory:
-
-```markdown
----
-description: Brief description of your command
 ---
 
-Your command prompt here...
+## Architecture Philosophy
+
+### Why One Plugin?
+
+The Oneclick plugin contains all agents for LINEAR ticket implementation because they form a **cohesive workflow** working toward one goal. This follows Anthropic's best practices seen in `feature-dev` and `pr-review-toolkit` plugins.
+
+### Organizing Principles
+
+**Plugin Boundary** = Cohesive Workflow
+- All ticket implementation agents in ONE plugin
+- They're interdependent (implementation uses the plan from architecture)
+- Users install one plugin to get complete workflow
+- Avoids artificial separation of related functionality
+
+**Agent Boundary** = Specialized Role
+- Each agent has ONE clear focus area
+- ticket-analyzer (parsing), codebase-explorer (understanding), code-architect (designing), etc.
+- Can be invoked individually or orchestrated by commands
+- Generic across all platforms (frontoffice, backoffice, backend)
+
+**Skill Boundary** = Platform Knowledge
+- Frontoffice skills (React, git submodules, frontend testing)
+- Backoffice skills (admin patterns, RBAC) - *coming soon*
+- Backend skills (API design, database migrations) - *coming soon*
+- Agents autonomously use relevant skills based on context (model-invoked)
+
+**This is NOT**:
+- ❌ Three separate plugins (analyze-plugin, implement-plugin, review-plugin)
+  - Would require installing multiple plugins for one workflow
+  - Creates artificial separation of interdependent steps
+
+- ❌ Platform-specific plugins (frontoffice-plugin, backend-plugin)
+  - Would duplicate agent logic across platforms
+  - Only skills differ between platforms
+
+---
+
+## What's Included
+
+### 📦 Plugin: `oneclick`
+
+**7 Specialized Agents**:
+| Agent | Role | When Invoked |
+|-------|------|--------------|
+| ticket-analyzer | Parse LINEAR requirements | /analyze-ticket, /workflow |
+| codebase-explorer | Understand project structure | /analyze-ticket, /workflow |
+| code-architect | Design implementation approach | /analyze-ticket, /workflow |
+| code-implementer | Write production code | /implement, /workflow |
+| test-generator | Create comprehensive tests | /implement, /workflow |
+| code-reviewer | Validate code quality | /review, /workflow |
+| pr-creator | Create pull requests | /review, /workflow |
+
+**8 Commands**:
+- `/workflow [TICKET-ID]` - Full workflow (analyze → implement → create-pr → review-pr)
+- `/analyze-ticket [TICKET-ID] [--auto-write]` - Analysis & planning phase
+- `/implement [TICKET-ID] [--auto-commit]` - Implementation & testing phase
+- `/review` - Review local changes (diff with base branch)
+- `/create-pr` - Create pull request
+- `/review-pr [pr-number]` - Review pull request
+- `/create-task` - Create LINEAR tickets
+- `/update-task [TICKET-ID]` - Update LINEAR tickets
+
+**5 Frontoffice Skills**:
+- crud-operations - CRUD patterns for API operations
+- react-component-patterns - React component architecture
+- global-state-management - Redux/state patterns
+- frontend-testing - Jest & React Testing Library
+- git-submodule-workflow - Git submodule handling
+
+---
+
+## How It Works
+
+### Agent Orchestration
+
+Commands invoke specialized agents based on the workflow phase:
+
+```
+/workflow TAN-123
+    ↓
+┌─────────────────────┐
+│ Phase 1: Analysis   │
+├─────────────────────┤
+│ ticket-analyzer     │ ← Parse LINEAR ticket
+│ codebase-explorer   │ ← Understand code
+│ code-architect      │ ← Design approach
+└─────────────────────┘
+    ↓ (User approval)
+┌─────────────────────┐
+│ Phase 2: Implement  │
+├─────────────────────┤
+│ code-implementer    │ ← Write code
+│ test-generator      │ ← Create tests
+└─────────────────────┘
+    ↓
+┌─────────────────────┐
+│ Phase 3: Review     │
+├─────────────────────┤
+│ code-reviewer       │ ← Validate quality
+│ pr-creator          │ ← Submit PR
+└─────────────────────┘
 ```
 
-Access it via: `/your-command-name`
+### Skills as Differentiators
 
-## Best Practices
+Agents are **generic** and work across all platforms. **Skills** provide platform-specific knowledge:
 
-1. Always start with `/start-work` for comprehensive task handling
-2. Review agent-generated plans before implementation
-3. Ensure all tests pass before creating PRs
-4. Keep documentation files updated with your project specifics
+```javascript
+// code-implementer agent working on frontoffice code
+// Autonomously uses frontoffice skills:
+
+✓ Uses git-submodule-workflow skill (detects src/_core changes)
+✓ Uses react-component-patterns skill (creating React components)
+✓ Uses crud-operations skill (implementing API calls)
+✓ Uses frontend-testing skill (writing Jest tests)
+```
+
+When working on backend code (future), the same `code-implementer` agent would use **backend skills** instead.
+
+---
+
+## Benefits
+
+✅ **Follows Anthropic best practices** - Plugin organization like `feature-dev`, agent specialization like `pr-review-toolkit`
+
+✅ **No duplication** - Single plugin with specialized generic agents
+
+✅ **Clear boundaries** - Plugin (workflow) → Agent (role) → Skill (platform knowledge)
+
+✅ **Scalable** - Add new platforms by adding skills, not duplicating agents
+
+✅ **Composable** - Commands can invoke agents individually or as workflows
+
+✅ **Maintainable** - Each component has clear, focused responsibility
+
+✅ **Platform-agnostic agents** - Skills differentiate behavior across platforms
+
+---
+
+## Platform Support
+
+### Current
+- ✅ **Frontoffice** - Full skill support
+
+### Coming Soon
+- 🔄 **Backoffice** - Admin panel skills
+- 🔄 **Backend** - API development skills
+
+---
 
 ## Requirements
 
-- [Claude Code](https://docs.claude.com/en/docs/claude-code) installed
+- [Claude Code](https://github.com/anthropics/claude-code) 1.0+ ([Installation guide](https://docs.claude.com/en/docs/claude-code))
 - Git configured
 - GitHub CLI (`gh`) for PR creation
-- LINEAR CLI or API access (optional, for task management)
+- LINEAR MCP server (auto-configured during plugin installation)
 
-## Contributing
+### LINEAR MCP Configuration
 
-Contributions are welcome! To contribute:
+The LINEAR MCP server is automatically configured when you install the plugin. If you need to configure it manually, add this to your Claude Code settings at `~/.claude/settings.json`:
 
-1. Fork this repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request with a clear description
-
-## Support
-
-For issues or questions:
-- Check the [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
-- Open an issue in this repository
-- Contact the Oneclick development team
-
-## License
-
-This configuration is provided as-is for use within development projects.
+```json
+{
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.linear.app/sse"]
+    }
+  }
+}
+```
 
 ---
 
+## Contributing
+
+We welcome contributions! To add new skills or agents:
+
+1. Fork this repository
+2. Create a feature branch
+3. Make your changes:
+   - New agents: Add to `plugins/oneclick/agents/`
+   - New commands: Add to `plugins/oneclick/commands/`
+   - New skills: Add to `plugins/oneclick/skills/{platform}/`
+4. Follow existing patterns and naming conventions
+5. Test with local marketplace
+6. Submit pull request
+
+---
+
+## Support
+
+- **Issues**: Open an issue in this repository
+- **Documentation**: See `plugins/oneclick/README.md` for detailed plugin docs
+- **Claude Code Docs**: https://docs.claude.com/en/docs/claude-code
+
+---
+
+## License
+
+MIT License - See LICENSE file for details
+
 **Maintained By**: Oneclick Development Team
-**Last Updated**: 2025-10-13
+**Last Updated**: 2025-10-24
