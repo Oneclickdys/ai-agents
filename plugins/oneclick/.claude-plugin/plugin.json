@@ -1,0 +1,29 @@
+{
+  "name": "oneclick",
+  "description": "Comprehensive LINEAR ticket implementation workflow with specialized agents for analysis, implementation, testing, and review across all Oneclick platforms",
+  "version": "1.0.0",
+  "author": {
+    "name": "Oneclick Development Team",
+    "email": "dev@oneclick.com"
+  },
+  "homepage": "https://github.com/Oneclickdys/ai-agents",
+  "repository": "https://github.com/Oneclickdys/ai-agents",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "linear",
+    "tickets",
+    "development",
+    "automation",
+    "agents",
+    "frontend",
+    "backend",
+    "testing"
+  ],
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.linear.app/sse"]
+    }
+  }
+}
