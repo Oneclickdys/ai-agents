@@ -1,7 +1,7 @@
 ---
 argument-hint: [linear-task-id] --additional-context [optional context for AI to consider]
 description: Update existing LINEAR task with enhanced analysis based on codebase review
-allowed-tools: Grep, Glob, Read, Task, mcp__atlassian__*
+allowed-tools: Grep, Glob, Read, Task, mcp__context7__resolve-library-id, mcp__context7__get-library-docs, mcp__atlassian__*
 ---
 
 I need to update an existing LINEAR task with enhanced technical details. The task ID provided is: $ARGUMENTS
@@ -35,6 +35,7 @@ Please help me by following this workflow:
 ## Phase 3: Enhanced Description Generation
 
 Using the template from `.claude/task-template.md`, create an updated comprehensive task description that includes:
+
 - **Summary**: Keep existing or refine if needed
 - **End Goal/Objective**: Clear desired outcome (enhanced from original)
 - **Technical Context**: Architecture and implementation approach based on codebase analysis
@@ -56,6 +57,7 @@ Using the template from `.claude/task-template.md`, create an updated comprehens
    - Return confirmation of successful update
 
 **IMPORTANT**:
+
 - Preserve all existing metadata (assignee, priority, due date, etc.) unless explicitly instructed to change
 - Append to existing description rather than replacing if there's valuable existing content
 - After presenting the enhanced description, immediately proceed to update the JIRA task automatically
