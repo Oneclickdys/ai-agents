@@ -12,7 +12,7 @@ You are tasked with creating git commits for the changes made during this sessio
 This is a **parent repository with a Git submodule**:
 - **Parent repo**: `tangerine-frontoffice` (https://github.com/Oneclickdys/tangerine-frontoffice)
 - **Submodule**: `src/_core` (https://github.com/Oneclickdys/i2c_frontoffice_core)
-- **Main branches**: `main` in parent, `master` in submodule
+- **Main branches**: `main` in parent, `main-core` in submodule
 
 ## Process:
 
@@ -35,8 +35,8 @@ This is a **parent repository with a Git submodule**:
    a. Navigate to submodule and create branch if needed:
    ```bash
    cd src/_core
-   git checkout master
-   git pull origin master
+   git checkout main-core
+   git pull origin main-core
    git checkout -b tan-XXXX-description
    ```
 
@@ -106,8 +106,8 @@ This is a **parent repository with a Git submodule**:
 **If submodule is in detached HEAD state:**
 ```bash
 cd src/_core
-git checkout master
-git pull origin master
+git checkout main-core
+git pull origin main-core
 git checkout -b your-feature-branch
 # Cherry-pick or reapply your changes
 ```
