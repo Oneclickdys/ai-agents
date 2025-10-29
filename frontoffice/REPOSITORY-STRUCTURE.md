@@ -20,7 +20,7 @@ The Tangerine platform consists of multiple repositories:
    - Shared React components, hooks, utilities
    - Location: `src/_core/` (within this repo)
    - URL: https://github.com/Oneclickdys/i2c_frontoffice_core
-   - Branch: `master`
+   - Branch: `main-core`
 
 ### Backend Repositories
 
@@ -108,7 +108,7 @@ Feature: Add user profile photo upload
 ### Submodule Repository
 - **Name**: `i2c_frontoffice_core` (located at `src/_core`)
 - **URL**: https://github.com/Oneclickdys/i2c_frontoffice_core
-- **Main Branch**: `master` ⚠️ (different from parent!)
+- **Main Branch**: `main-core` ⚠️ (different from parent!)
 - **Purpose**: Shared core components, atoms, modules, hooks, utilities
 
 ## Directory Structure
@@ -141,7 +141,7 @@ tangerine-frontoffice/
 
 2. **Different Main Branches**:
    - Parent uses `main`
-   - Submodule uses `master`
+   - Submodule uses `main-core`
 
 3. **Submodule Reference**:
    - Parent repo stores a reference (commit SHA) to a specific submodule version
@@ -156,12 +156,12 @@ tangerine-frontoffice/
 1. **Commit in submodule**:
    ```bash
    cd src/_core
-   git checkout master
-   git pull origin master
-   git checkout -b tan-XXXX-feature
+   git checkout main-core
+   git pull origin main-core
+   git checkout -b TAN-XXXX-feature
    git add <files>
    git commit -m "TAN-XXXX: Description"
-   git push -u origin tan-XXXX-feature
+   git push -u origin TAN-XXXX-feature
    ```
 
 2. **Commit in parent** (updates submodule reference):
@@ -169,17 +169,17 @@ tangerine-frontoffice/
    cd ../..
    git checkout main
    git pull origin main
-   git checkout -b tan-XXXX-feature
+   git checkout -b TAN-XXXX-feature
    git add src/_core
    git commit -m "TAN-XXXX: Description
 
    Updates _core submodule to include [changes]"
-   git push -u origin tan-XXXX-feature
+   git push -u origin TAN-XXXX-feature
    ```
 
 3. **Create TWO PRs**:
-   - Submodule PR: base = `master`
-   - Parent PR: base = `main`, mention submodule PR
+   - Submodule PR: base = `QA-core`
+   - Parent PR: base = `QA`, mention submodule PR
 
 #### Scenario 2: Files Outside `src/_core/` (Parent Only)
 
@@ -188,13 +188,13 @@ tangerine-frontoffice/
 ```bash
 git checkout main
 git pull origin main
-git checkout -b tan-XXXX-feature
+git checkout -b TAN-XXXX-feature
 git add <files>
 git commit -m "TAN-XXXX: Description"
-git push -u origin tan-XXXX-feature
+git push -u origin TAN-XXXX-feature
 ```
 
-Create PR with base = `main`
+Create PR with base = `QA`
 
 ### Common Commands
 
@@ -215,12 +215,12 @@ git ls-tree HEAD src/_core
 
 ## Branch Naming Convention
 
-Format: `tan-XXXX-short-description` or `tanai-XXX-short-description`
+Format: `TAN-XXXX-short-description` or `TANAI-XXX-short-description`
 
 Examples:
-- `tan-3554-fix-invalid-url-error`
-- `tan-3310-qualitative-grading`
-- `tanai-329-activity-session-response`
+- `TAN-3554-fix-invalid-url-error`
+- `TAN-3310-qualitative-grading`
+- `TANAI-329-activity-session-response`
 
 ## Commit Message Format
 
@@ -240,7 +240,7 @@ Examples:
 ### For Submodule Changes:
 
 1. **Submodule PR** (i2c_frontoffice_core):
-   - Base: `master`
+   - Base: `main-core`
    - Contains actual code changes
    - URL: `https://github.com/Oneclickdys/i2c_frontoffice_core/pull/new/BRANCH`
 
@@ -258,7 +258,7 @@ See `/Users/camilolopez/DEVS/repos/tangerine-frontoffice/.claude/commands/create
 
 ⚠️ **Always Remember:**
 
-1. Submodule uses `master` branch, parent uses `main`
+1. Submodule uses `main-core` branch, parent uses `main`
 2. Commit in submodule FIRST, then parent
 3. Create submodule PR FIRST, then parent PR
 4. Parent PR should reference submodule PR
@@ -270,8 +270,8 @@ See `/Users/camilolopez/DEVS/repos/tangerine-frontoffice/.claude/commands/create
 
 ```bash
 cd src/_core
-git checkout master
-git pull origin master
+git checkout main-core
+git pull origin main-core
 git checkout -b your-feature-branch
 # Reapply your changes or cherry-pick commits
 ```
@@ -281,8 +281,8 @@ git checkout -b your-feature-branch
 ```bash
 cd src/_core
 git branch --show-current  # Check current branch
-git checkout master        # Switch to master
-git pull origin master     # Update
+git checkout main-core        # Switch to main-core
+git pull origin main-core     # Update
 ```
 
 ### Submodule Reference Not Updated
