@@ -1,0 +1,24 @@
+{
+  "name": "oneclick",
+  "owner": {
+    "name": "Oneclick Development Team",
+    "email": "dev@oneclick.com"
+  },
+  "metadata": {
+    "description": "Oneclick AI Agents marketplace for LINEAR ticket implementation workflows",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "oneclick",
+      "source": "./plugins/oneclick",
+      "description": "Comprehensive workflow plugin for LINEAR ticket implementation with specialized agents for analysis, implementation, and review",
+      "version": "1.0.0",
+      "author": {
+        "name": "Oneclick Development Team"
+      },
+      "keywords": ["workflow", "linear", "tickets", "development", "automation"],
+      "category": "productivity"
+    }
+  ]
+}
