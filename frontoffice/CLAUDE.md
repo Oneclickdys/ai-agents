@@ -107,11 +107,7 @@ import './_component-name.scss';
 function ComponentName({ prop1, prop2, prop3 }) {
   // Component logic here
 
-  return (
-    <div className="component-name">
-      {/* JSX here */}
-    </div>
-  );
+  return <div className="component-name">{/* JSX here */}</div>;
 }
 
 // REQUIRED: Define PropTypes
@@ -155,7 +151,7 @@ export default ComponentName;
   font-size: 16px;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 ```
 
@@ -255,6 +251,7 @@ export default withTranslation()(MyComponent);
 ```
 
 **Translation Files Location:**
+
 - `src/app/translations/es/` (Spanish)
 - `src/app/translations/en/` (English)
 - `src/app/translations/pt/` (Portuguese)
@@ -359,27 +356,32 @@ npm run lint
 **IMMEDIATELY after implementing any frontend change:**
 
 1. **Start dev server** (if not running):
+
    ```bash
    npm run start
    ```
 
 2. **Navigate to changed pages**:
+
    ```javascript
    // Use Playwright browser tools
-   mcp__playwright__browser_navigate({ url: 'http://localhost:3000/your-page' })
+   mcp__playwright__browser_navigate({ url: 'http://localhost:3000/your-page' });
    ```
 
 3. **Take screenshots** at multiple viewports:
+
    - Desktop: 1440px width
    - Tablet: 768px width
    - Mobile: 375px width
 
 4. **Check console for errors**:
+
    ```javascript
-   mcp__playwright__browser_console_messages({ onlyErrors: true })
+   mcp__playwright__browser_console_messages({ onlyErrors: true });
    ```
 
 5. **Verify design compliance**:
+
    - Colors match design system
    - Typography uses correct variables
    - Spacing is consistent
@@ -443,6 +445,8 @@ git push origin branch-name     # Push to remote
 
 - ✅ Use functional components with hooks (not classes)
 - ✅ Use `function` keyword (not arrow functions for components)
+- ✅ Use `useMemo` to memoized values and avoid innecesary re-renders. But only use it when is necessary. Analize the scenario before use it
+- ✅ Use `useCallback` to memoized function and avoid innecesary re-renders in childrens who receive the function in props. But only use it when is necessary. Analize the scenario before use it
 - ✅ Export default at the end of file
 - ✅ Sort props alphabetically
 - ✅ Define PropTypes and defaultProps
@@ -464,7 +468,7 @@ git push origin branch-name     # Push to remote
 - ❌ Don't hardcode colors, fonts, or spacing
 - ❌ Don't skip PropTypes or defaultProps
 - ❌ Don't skip tests
-- ❌ Don't modify _core/ unless absolutely necessary
+- ❌ Don't modify \_core/ unless absolutely necessary
 - ❌ Don't commit console.log statements
 - ❌ Don't ignore ESLint warnings
 - ❌ Don't skip documentation
